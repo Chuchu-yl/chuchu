@@ -1,28 +1,26 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <router-view></router-view>
+    <!-- 为true的话底部显示，false的话底部不显示 -->
+    <FooterGuide v-show="$route.meta.isShowFooter" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import FooterGuide from './components/FooterGuide/FooterGuide'
+import {reqSite} from './api'
 export default {
-  name: 'app',
   components: {
-    HelloWorld
+    FooterGuide
+  },
+ async mounted(){
+    const result=await reqSite("116.36867", "40.10038")
+    if(result.code===0){
+      console.log(result.data)
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
