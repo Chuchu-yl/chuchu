@@ -4,16 +4,22 @@
       <div class="login_header">
         <h2 class="login_logo">硅谷外卖</h2>
         <div class="login_header_title">
-          <a href="javascript:;" class="on">短信登录</a>
-          <a href="javascript:;">密码登录</a>
+          <a href="javascript:;" :class="{'on':loginWay}" @click="loginWay=true">短信登录</a>
+          <a href="javascript:;" :class="{'on':!loginWay}" @click="loginWay=false">密码登录</a>
         </div>
       </div>
       <div class="login_content">
         <form>
-          <div class="on">
+          <div :class="{'on':loginWay}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号" />
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone"/>
+              <button  class="get_verification" 
+              :disabled="!isRightPhone || computeTimer>0" 
+              :class="{right_phone_num:isRightPhone}"
+              @click.prevent="sendCode"
+              >
+              {{computeTimer > 0 ? `已发送${computeTimer}s`: "发送验证码"}}
+              </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码" />
@@ -23,21 +29,21 @@
               <a href="javascript:;">《用户服务协议》</a>
             </section>
           </div>
-          <div>
+          <div :class="{'on':!loginWay}">
             <section>
               <section class="login_message">
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名" />
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码" />
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPwd?'text':'password'" maxlength="8" placeholder="密码" />
+                <div class="switch_button" :class="isShowPwd ? 'on':'off'" @click="isShowPwd=!isShowPwd">
+                  <div class="switch_circle" :class="{'right':isShowPwd}"></div>
+                  <span class="switch_text">{{isShowPwd ? 'abc' : '...'}}</span>
                 </div>
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" />
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha" />
+                <img class="get_verification" ref='pic' src="http://localhost:5000/captcha" alt="captcha" @click="getPic"/>
               </section>
             </section>
           </div>
@@ -52,7 +58,42 @@
   </section>
 </template>
 <script>
-export default {};
+// import { clearInterval } from 'timers'
+export default {
+  data(){
+    return{
+      // 切换登录方式
+      loginWay:true,
+      // 存储手机号码
+      phone:'',
+      computeTimer:0,
+      // 是否展示密码
+      isShowPwd:false
+    }
+  },
+  computed:{
+    // 是否输入了正确的电话号码
+    isRightPhone(){
+      return /[1]\d{10}/.test(this.phone)
+    }
+  },
+  methods:{
+    sendCode(){
+      this.computeTimer=10
+      this.timerId=setInterval(() => {
+          this.computeTimer--
+          if(this.computeTimer<0){
+            clearInterval(this.timerId)
+          }
+
+      }, 1000);
+    },
+    getPic(){
+      this.$refs.pic.src='http://localhost:5000/captcha?q='+Date.now()
+     
+    }
+  }
+};
 </script>
 
 <style lang='stylus' rel='stylesheet/stylus' scoped>
@@ -115,6 +156,8 @@ export default {};
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone_num
+                  color black
             .login_verification
               position relative
               margin-top 16px
@@ -154,6 +197,8 @@ export default {};
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.1)
                   transition transform 0.3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999

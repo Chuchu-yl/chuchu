@@ -2,7 +2,7 @@
   <!--首页外卖-->
 
   <section class="msite">
-    <Header title="昌平区北七家宏福科技园(337省道北)">
+    <Header :title="address.name || '正在定位中...'">
       <span class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </span>
@@ -14,104 +14,18 @@
     <nav class="msite_nav">
       <div class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
+          <!-- 遍历一个数组，里面有两个div,div在再遍历，分别有两组放内容的数组 -->
+          <div class="swiper-slide" v-for="(catagorys,index) in catagoryArr" :key="index">
+            <a
+              href="javascript:"
+              class="link_to_food"
+              v-for="(catagory,index) in catagorys"
+              :key="index"
+            >
               <div class="food_container">
-                <img src="./images/nav/1.jpg" />
+                <img :src="`https://fuss10.elemecdn.com`+catagory.image_url" />
               </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg" />
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/3.jpg" />
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/4.jpg" />
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/5.jpg" />
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/6.jpg" />
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/7.jpg" />
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/8.jpg" />
-              </div>
-              <span>土豪推荐</span>
-            </a>
-          </div>
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/9.jpg" />
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg" />
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg" />
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg" />
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg" />
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg" />
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg" />
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg" />
-              </div>
-              <span>土豪推荐</span>
+              <span>{{catagory.title}}</span>
             </a>
           </div>
         </div>
@@ -119,27 +33,58 @@
         <div class="swiper-pagination"></div>
       </div>
     </nav>
-    <ShopList/>
+    <ShopList />
   </section>
 </template>
 <script>
-
-import ShopList from '../../components/ShopList/ShopList'
-import Swiper from 'swiper'
+import ShopList from "../../components/ShopList/ShopList";
+import Swiper from "swiper";
+import { mapState } from "vuex";
 // 需要引入css
-import 'swiper/dist/css/swiper.css'
+import "swiper/dist/css/swiper.css";
 export default {
-  components:{
+  components: {
     ShopList
   },
-  mounted(){
-    new Swiper ('.swiper-container', {
-      loop: true, // 循环模式选项
-      // 如果需要分页器
-      pagination: {
-        el: '.swiper-pagination',
-      }
-    })   
+ async mounted() {
+    this.$store.dispatch("getShops");
+    // 获取食品分类的信息
+   await this.$store.dispatch("getCategorys");
+    // 等待数据获取成功后，轮播图生效
+    // 数据有了,界面渲染完毕了,才能new实例对象----轮播图才有效果
+      new Swiper(".swiper-container", {
+        loop: true, // 循环模式选项
+        // 如果需要分页器
+        pagination: {
+          el: ".swiper-pagination"
+        }
+      })
+    // this.$nextTick(() => {
+      
+    // });
+  },
+  computed: {
+    // 获取到状态,进行操作
+    ...mapState(["address", "categorys"]),
+    catagoryArr() {
+      // 获取状态中的食品分类的数组
+      const { categorys } = this;
+      let wrapArr = [];
+      let innerArr = [];
+      categorys.forEach(category => {
+        // 先判断里面的数组中是否有数据，要是没有的话，把里面的数组放到外面的数组中去
+        if (innerArr.length === 0) {
+          wrapArr.push(innerArr);
+        }
+        // 把里面的数组中添加食品分类的每一项
+        innerArr.push(category);
+        // 如果里面的数组的长度等于8，就把这个数组设为空数组，再继续存放内容,直到放完16个为止
+        if (innerArr.length === 8) {
+          innerArr = [];
+        }
+      });
+      return wrapArr;
+    }
   }
 };
 </script>

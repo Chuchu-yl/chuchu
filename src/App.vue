@@ -8,16 +8,15 @@
 
 <script>
 import FooterGuide from './components/FooterGuide/FooterGuide'
-import {reqSite} from './api'
 export default {
   components: {
     FooterGuide
   },
- async mounted(){
-    const result=await reqSite("116.36867", "40.10038")
-    if(result.code===0){
-      console.log(result.data)
-    }
+ // 只用分发一次，所以写在App中
+  mounted(){
+    // 页面首次加载，直接发送请求，获取信息
+    // 分发action给服务器请求，获取信息
+    this.$store.dispatch('getAddress')
   }
 }
 </script>
