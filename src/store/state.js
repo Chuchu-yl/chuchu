@@ -7,5 +7,6 @@ export default{
     // 食品分类
         categorys:[],
     // 商铺
-        shops:[]
+        shops:[],
+        user:{}
 }

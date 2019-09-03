@@ -14,3 +14,5 @@ export const reqLoginUserPwd=({name,pwd,captcha})=>ajax(BASE+`/login_pwd`,{name,
 export const reqLoginPhoneCode=(phone,code)=>ajax(BASE+`/login_sms`,{phone,code},'POST')
 // 用户登出
 export const reqLogout=()=>ajax(BASE+`/logout`)
+// 根据会话获取用户信息,自动登录的功能
+export const reqUserInfo=()=>ajax(BASE+`/userinfo`)

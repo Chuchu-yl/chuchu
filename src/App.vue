@@ -8,15 +8,22 @@
 
 <script>
 import FooterGuide from './components/FooterGuide/FooterGuide'
+import {reqUserInfo} from './api'
+import {RECEIVE_USER} from './store/mutation-types'
 export default {
   components: {
     FooterGuide
   },
  // 只用分发一次，所以写在App中
-  mounted(){
+ async mounted(){
     // 页面首次加载，直接发送请求，获取信息
     // 分发action给服务器请求，获取信息
     this.$store.dispatch('getAddress')
+    const result = await reqUserInfo()
+    if(result.code===0){
+      const user=result.data
+      this.$store.commit(RECEIVE_USER,user)
+    }
   }
 }
 </script>

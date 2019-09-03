@@ -109,6 +109,7 @@
 </template>
 <script>
 import { reqCode, reqLoginPhoneCode, reqLoginUserPwd } from "../../api";
+import {RECEIVE_USER} from '../../store/mutation-types.js'
 // import { clearInterval } from 'timers'
 export default {
   data() {
@@ -170,19 +171,24 @@ export default {
       }
       await this.$validator.validateAll(names);
       // 判断，如果是短信登录，发送相应的请求
-
+      let result
       if (this.loginWay) {
-        const result = await reqLoginPhoneCode(phone, code);
+       result = await reqLoginPhoneCode(phone, code);
         if (result.code === 0) {
           // 登录成功，跳转到个人中心
-          alert("成了");
+          // alert("成了");
+          // console.log(result.data);
+          const user=result.data
+          this.$router.replace('/profile')
+          this.$store.commit(RECEIVE_USER,user)
         } else {
           alert("登录失败");
         }
       } else {
-        const result = reqLoginUserPwd({ name, pwd, captcha });
+        result = reqLoginUserPwd({ name, pwd, captcha });
         if (result.code === 0) {
           alert("成功");
+          console.log(result.data);
         } else {
           alert("登录失败");
         }

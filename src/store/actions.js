@@ -1,6 +1,6 @@
 // 间接修改状态数据的方法
-import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS} from './mutation-types'
-import {reqSite,reqCategorys,reqShops} from '../api'
+import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_USER} from './mutation-types'
+import {reqSite,reqCategorys,reqShops,reqUserInfo} from '../api'
 export default {
    async getAddress({commit,state}){
         const {E,N} = state
@@ -26,5 +26,5 @@ export default {
             const shops=result.data
             commit(RECEIVE_SHOPS,shops)
         }
-    }
+    },
 }

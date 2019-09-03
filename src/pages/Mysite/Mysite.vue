@@ -7,7 +7,7 @@
         <i class="iconfont icon-sousuo"></i>
       </span>
       <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
+        <span class="header_login_text">{{user._id? (user.phone?(user.phone):(user.name)) : ('登录|注册')}}</span>
       </span>
     </Header>
     <!--首页导航-->
@@ -50,6 +50,7 @@
 import ShopList from "../../components/ShopList/ShopList";
 import Swiper from "swiper";
 import { mapState } from "vuex";
+
 // 引入lodash中的chunk,来拆分数组为二维数组
 import chunk from "lodash/chunk";
 // 需要引入css
@@ -77,7 +78,7 @@ export default {
   },
   computed: {
     // 获取到状态,进行操作
-    ...mapState(["address", "categorys"]),
+    ...mapState(["address", "categorys",'user']),
     catagoryArr() {
       // 获取状态中的食品分类的数组
       const { categorys } = this;
