@@ -169,12 +169,16 @@ export default {
       } else {
         names = ["name", "pwd", "captcha"];
       }
-      await this.$validator.validateAll(names);
-      // 判断，如果是短信登录，发送相应的请求
+      const success=  await this.$validator.validateAll(names);
+      if(success){
+        // 判断，如果是短信登录，发送相应的请求
       let result
       if (this.loginWay) {
        result = await reqLoginPhoneCode(phone, code);
-        if (result.code === 0) {
+      } else {
+        result = reqLoginUserPwd({ name, pwd, captcha });
+      }
+      if (result.code === 0) {
           // 登录成功，跳转到个人中心
           // alert("成了");
           // console.log(result.data);
@@ -184,15 +188,8 @@ export default {
         } else {
           alert("登录失败");
         }
-      } else {
-        result = reqLoginUserPwd({ name, pwd, captcha });
-        if (result.code === 0) {
-          alert("成功");
-          console.log(result.data);
-        } else {
-          alert("登录失败");
-        }
       }
+      
     }
   }
 };

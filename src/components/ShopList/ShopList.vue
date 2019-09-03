@@ -22,13 +22,6 @@
               <section class="shop_rating_order">
                 <section class="shop_rating_order_left">
                   <Star :score='shop.rating' :size='24'/>
-                  <!-- <div class="star star-24">
-                    <span class="star-item on"></span>
-                    <span class="star-item on"></span>
-                    <span class="star-item on"></span>
-                    <span class="star-item half"></span>
-                    <span class="star-item off"></span>
-                  </div> -->
                   <div class="rating_section">{{shop.rating}}</div>
                   <div class="order_section">月售{{shop.recent_order_num}}单</div>
                 </section>
@@ -47,6 +40,13 @@
           </a>
         </li>
         
+      </ul>
+      <!-- 懒加载 -->
+      <ul v-if="!shops.length">
+        <li><img src="./images/shop_back.svg" alt=""></li>
+        <li><img src="./images/shop_back.svg" alt=""></li>
+        <li><img src="./images/shop_back.svg" alt=""></li>
+        <li><img src="./images/shop_back.svg" alt=""></li>
       </ul>
     </div>
   </div>

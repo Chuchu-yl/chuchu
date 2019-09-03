@@ -1,6 +1,6 @@
 // 间接修改状态数据的方法
-import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_USER} from './mutation-types'
-import {reqSite,reqCategorys,reqShops,reqUserInfo} from '../api'
+import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RESET_USER} from './mutation-types'
+import {reqSite,reqCategorys,reqShops,reqLogout} from '../api'
 export default {
    async getAddress({commit,state}){
         const {E,N} = state
@@ -27,4 +27,11 @@ export default {
             commit(RECEIVE_SHOPS,shops)
         }
     },
+    // 发送异步请求修改状态
+    async resetUser({commit}){
+        const result = await reqLogout()
+        if(result.code===0){
+            commit(RESET_USER)
+        }
+    }
 }

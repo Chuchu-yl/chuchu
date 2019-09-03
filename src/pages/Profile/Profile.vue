@@ -2,7 +2,7 @@
   <section class="profile">
     <Header title="我的"/>
     <section class="profile-number">
-      <a href="javascript:" class="profile-link" @click="$router.push('/login')">
+      <a href="javascript:" class="profile-link" @click="user._id ? ($router.push('/xxx')) : ($router.push('/login'))">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
         </div>
@@ -95,19 +95,40 @@
       </a>
     </section>
     <section class="profile_my_order border-1px">
-      <mt-button type="danger">退出</mt-button>
+      <!-- <Button type="danger">退出</Button> -->
+      <!-- <mt-button>退出</mt-button> -->
+      <button v-show="user._id" @click="logout">退出</button>
+      
     </section>
   </section>
 </template>
 <script>
-import {mapState} from 'vuex'
+import {mapState} from 'vuex';
+// import {RESET_USER} from '../../store/mutation-types'
+// import 'mint-ui/lib/style.css';
+// import {Button} from 'mint-ui';
 // import { Button } from 'mint-ui';
+
 export default {
   
   computed: {
     // 状态发生改变，登录状态改变
     ...mapState(['user'])
+  },
+  methods:{
+    logout(){
+      // 点击退出的时候，清空state中的user
+      this.$store.dispatch('resetUser')
+    }
   }
+  // components:{
+  //   [Button.name]:Button
+  // },
+  
+  // components:{
+  //   Button
+  // }
+
 };
 </script>
 
