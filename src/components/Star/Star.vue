@@ -12,6 +12,7 @@ export default {
 	},
 	computed: {
 			classArr(){
+        // 创建一个存储星星的数组，并返回这个数组
 				let classArr=[]
 				// 按照分数来显示星星
 				const {score}=this
@@ -25,7 +26,7 @@ export default {
 					classArr.push('half')
 				}
 				// classArr.push('off')
-				// 判断score的长度小于5的话，添加off
+				// 判断数组的长度小于5的话，添加off
 				while(classArr.length<5){
 					classArr.push('off')
 				}

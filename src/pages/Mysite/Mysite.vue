@@ -14,6 +14,16 @@
     <nav class="msite_nav">
       <div class="swiper-container">
         <div class="swiper-wrapper">
+          <!-- 
+  <div class="swiper-slide" v-for="(catagorys,index) in catagoryArr2" :key="index">
+            <a
+              href="javascript:"
+              class="link_to_food"
+              v-for="(catagory,index) in catagorys"
+              :key="index"
+            > 
+          -->
+
           <!-- 遍历一个数组，里面有两个div,div在再遍历，分别有两组放内容的数组 -->
           <div class="swiper-slide" v-for="(catagorys,index) in catagoryArr" :key="index">
             <a
@@ -40,27 +50,29 @@
 import ShopList from "../../components/ShopList/ShopList";
 import Swiper from "swiper";
 import { mapState } from "vuex";
+// 引入lodash中的chunk,来拆分数组为二维数组
+import chunk from "lodash/chunk";
 // 需要引入css
 import "swiper/dist/css/swiper.css";
 export default {
   components: {
     ShopList
   },
- async mounted() {
+  async mounted() {
     this.$store.dispatch("getShops");
     // 获取食品分类的信息
-   await this.$store.dispatch("getCategorys");
+    await this.$store.dispatch("getCategorys");
     // 等待数据获取成功后，轮播图生效
     // 数据有了,界面渲染完毕了,才能new实例对象----轮播图才有效果
-      new Swiper(".swiper-container", {
-        loop: true, // 循环模式选项
-        // 如果需要分页器
-        pagination: {
-          el: ".swiper-pagination"
-        }
-      })
+    new Swiper(".swiper-container", {
+      loop: true, // 循环模式选项
+      // 如果需要分页器
+      pagination: {
+        el: ".swiper-pagination"
+      }
+    });
     // this.$nextTick(() => {
-      
+
     // });
   },
   computed: {
@@ -84,6 +96,9 @@ export default {
         }
       });
       return wrapArr;
+    },
+    catagoryArr2() {
+      return chunk(this.categorys, 8);
     }
   }
 };
