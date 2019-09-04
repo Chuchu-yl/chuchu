@@ -97,8 +97,9 @@
     <section class="profile_my_order border-1px">
       <!-- <Button type="danger">退出</Button> -->
       <!-- <mt-button>退出</mt-button> -->
-      <button v-show="user._id" @click="logout">退出</button>
-      
+      <!-- <button style="width:100%" v-show="user._id" @click="logout">退出</button> -->
+        <!-- <el-button type="danger">危险按钮</el-button> -->
+        <el-button style="width:100%" type="danger" v-show="user._id" @click="open">退出</el-button>
     </section>
   </section>
 </template>
@@ -108,17 +109,38 @@ import {mapState} from 'vuex';
 // import 'mint-ui/lib/style.css';
 // import {Button} from 'mint-ui';
 // import { Button } from 'mint-ui';
-
+// import { MessageBox } from 'element-ui';
 export default {
   
   computed: {
     // 状态发生改变，登录状态改变
-    ...mapState(['user'])
+    // ...mapState(['user'])
+    ...mapState({
+      user:state=>state.user.user
+    })
   },
   methods:{
-    logout(){
+    open(){
       // 点击退出的时候，清空state中的user
-      this.$store.dispatch('resetUser')
+      this.$confirm('是否退出？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          // 退出清除user
+          this.$store.dispatch('resetUser')
+          this.$message({
+            type: 'success',
+            message: '退出成功'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'success',
+            message: '已取消退出'
+          });          
+        });
+    console.log(this);
+    
     }
   }
   // components:{

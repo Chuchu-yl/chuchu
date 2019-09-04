@@ -16,3 +16,8 @@ export const reqLoginPhoneCode=(phone,code)=>ajax(BASE+`/login_sms`,{phone,code}
 export const reqLogout=()=>ajax(BASE+`/logout`)
 // 根据会话获取用户信息,自动登录的功能
 export const reqUserInfo=()=>ajax(BASE+`/userinfo`)
+
+// 发送商品相关的请求
+export const reqGoods=()=>ajax('/goods')
+export const reqRatings=()=>ajax('/ratings')
+export const reqInfo=()=>ajax('/info')

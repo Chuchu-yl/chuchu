@@ -55,7 +55,10 @@
 import {mapState} from 'vuex'
 export default {
   computed: {
-    ...mapState(['shops'])
+    // ...mapState(['shops'])
+    ...mapState({
+      shops:state=>state.mysite.shops
+    })
   }
 };
 </script>

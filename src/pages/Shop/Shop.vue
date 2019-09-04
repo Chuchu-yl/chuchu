@@ -3,13 +3,13 @@
     <ShopHeader />
     <div class="tab">
       <div class="tab-item">
-        <router-link to="/shop/goods">商品</router-link>
+        <router-link replace to="/shop/goods">商品</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/shop/ratings">评分</router-link>
+        <router-link replace to="/shop/ratings">评分</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/shop/info">信息</router-link>
+        <router-link replace to="/shop/info">信息</router-link>
       </div>
     </div>
     <router-view></router-view>

@@ -78,7 +78,12 @@ export default {
   },
   computed: {
     // 获取到状态,进行操作
-    ...mapState(["address", "categorys",'user']),
+    // ...mapState(["address", "categorys",'user']),
+    ...mapState({
+      address: state=>state.mysite.address,
+      categorys: state=>state.mysite.categorys,
+      user: state=>state.user.user
+    }),
     catagoryArr() {
       // 获取状态中的食品分类的数组
       const { categorys } = this;

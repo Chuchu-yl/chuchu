@@ -7,18 +7,26 @@ import store from './store'
 // 注册全局的公共组件样式
 import Header from './components/Hearder/Hearder.vue'
 import Star from './components/Star/Star.vue'
-import 'mint-ui/lib/style.css'
-
+// import 'mint-ui/lib/style.css'
+import './mock/mock.serve.js'
 // 引入表单验证的vee-validate
 import '../validate.js'
-import { Button } from 'mint-ui';
-Vue.component(Button.name, Button);
+// import { Button } from 'mint-ui';
+// Vue.component(Button.name, Button);
+import ElementUI from 'element-ui';
+Vue.use(ElementUI);
+import Button from 'element-ui/lib/button';
+Vue.use(Button);
+
 Vue.config.productionTip = false
+import 'element-ui/lib/theme-chalk/index.css';
+import '../element-variables.scss'
 // 第一个是组件的名字，第二个是上面的那个组件
 Vue.component('Header',Header)
 Vue.component('Star',Star)
+// import 'element-ui/lib/theme-chalk/index.css';
 /* eslint-disable no-new */
-console.log(Button)
+// console.log(Button)
 new Vue({
   // el: '#app',
   components: { App },
