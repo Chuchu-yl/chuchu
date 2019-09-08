@@ -7,6 +7,7 @@ import store from './store'
 // 注册全局的公共组件样式
 import Header from './components/Hearder/Hearder.vue'
 import Star from './components/Star/Star.vue'
+import CartControl from './components/CartControl/CartControl.vue'
 // import 'mint-ui/lib/style.css'
 import './mock/mock.serve.js'
 // 引入表单验证的vee-validate
@@ -24,6 +25,7 @@ import '../element-variables.scss'
 // 第一个是组件的名字，第二个是上面的那个组件
 Vue.component('Header',Header)
 Vue.component('Star',Star)
+Vue.component('CartControl',CartControl)
 // import 'element-ui/lib/theme-chalk/index.css';
 /* eslint-disable no-new */
 // console.log(Button)

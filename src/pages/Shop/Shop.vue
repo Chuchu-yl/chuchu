@@ -20,8 +20,11 @@ import ShopHeader from "../../components/ShopHeader/ShopHeader";
 
 export default {
   components: {
-    ShopHeader
-  }
+    ShopHeader,
+  },
+   mounted(){
+    this.$store.dispatch('getInfo')
+  },
 };
 </script>
 <style lang='stylus' scoped>

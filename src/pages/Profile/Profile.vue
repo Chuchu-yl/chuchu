@@ -139,7 +139,7 @@ export default {
             message: '已取消退出'
           });          
         });
-    console.log(this);
+    // console.log(this);
     
     }
   }
