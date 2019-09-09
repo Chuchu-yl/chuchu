@@ -84,8 +84,20 @@ const getters={
     // 总数量
     totalCount(){
         return state.foodArr.reduce((pre, food) => pre + food.count, 0)
+    },
+    // 全部的评论
+    totalComment(){
+        return state.ratings.length
+    },
+    // 商家推荐的评论
+    shopRecommendComment(){
+        // rateType
+    const arr= state.ratings.filter((rating)=>{
+          return rating.rateType===0  
+        })
+        return arr.length
     }
-}
+}   
 
 export default {
     state,

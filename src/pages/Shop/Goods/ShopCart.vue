@@ -16,7 +16,7 @@
           <div class="pay" :class="payClass">{{payText}}</div>
         </div>
       </div>
-      <div class="shopcart-list" v-show="listShow">
+     <div class="shopcart-list" v-show="listShow">
         <div class="list-header">
           <h1 class="title">购物车</h1>
           <span class="empty">清空</span>
@@ -41,9 +41,10 @@
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
-import CartControl from "../../../components/CartControl/CartControl.vue";
+
 // 引入better-scoll插件
 import BScroll from "better-scroll";
+
 export default {
   data() {
     return {
@@ -81,27 +82,28 @@ export default {
         this.isShowCart = false;
         return false;
       }
-      // 出bug了
+      // 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM,放入better-scoll进行监视
       this.$nextTick(() => {
         // 单例模式
         if (!this.scroll) {
           this.scroll = new BScroll(".list-content", {
             click: true
-          });
+          })
         } else {
-          this.scroll.refresh();
+          // 重新计算 better-scroll，当 DOM 结构发生变化的时候务必要调用确保滚动的效果正常。
+          this.scroll.refresh()
         }
       });
-      return this.isShowCart;
+      return this.isShowCart
     }
-  },
-  components: {
-    CartControl
   },
   methods: {
     ShowCart() {
       this.isShowCart = !this.isShowCart;
     }
+  },
+  updated(){
+    console.log(this.foodArr)
   }
 };
 </script>
@@ -199,6 +201,7 @@ export default {
     top 0
     z-index -1
     width 100%
+    transform translateY(-100%)
     .list-header
       height 40px
       line-height 40px

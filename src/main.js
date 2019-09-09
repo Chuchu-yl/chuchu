@@ -27,6 +27,16 @@ Vue.component('Header',Header)
 Vue.component('Star',Star)
 Vue.component('CartControl',CartControl)
 // import 'element-ui/lib/theme-chalk/index.css';
+Vue.prototype.$bus=new Vue()
+
+// 图片懒加载
+import VueLazyload from 'vue-lazyload'
+import loading from './common/images/cat1.jpg'
+Vue.use(VueLazyload, {
+  loading
+})
+// 时间格式过滤器
+import './filter/index.js'
 /* eslint-disable no-new */
 // console.log(Button)
 new Vue({

@@ -5,23 +5,28 @@
         <h3 class="section-title">配送信息</h3>
         <div class="delivery">
           <div>
-            <span class="delivery-icon">硅谷专送</span>
-            <span>由商家配送提供配送，约30分钟送达，距离100m</span>
+            <span class="delivery-icon">{{info.description}}</span>
+            <span>由商家配送提供配送，约30分钟送达，距离{{info.distance}}m</span>
           </div>
-          <div class="delivery-money">配送费￥3</div>
+          <div class="delivery-money">配送费￥{{info.deliveryPrice}}</div>
         </div>
       </section>
       <div class="split"></div>
       <section class="section">
         <h3 class="section-title">活动与服务</h3>
         <div class="activity">
-          <div class="activity-item activity-green">
+          <div
+            class="activity-item"
+            :class="classArr[support.type]"
+            v-for="(support,index) in info.supports"
+            :key="index"
+          >
             <span class="content-tag">
-              <span class="mini-tag">首单</span>
+              <span class="mini-tag">{{support.name}}</span>
             </span>
-            <span class="activity-content">新用户下单立减17元(不与其它活动同享)</span>
+            <span class="activity-content">{{support.content}}</span>
           </div>
-          <div class="activity-item activity-red">
+          <!-- <div class="activity-item activity-red">
             <span class="content-tag">
               <span class="mini-tag">满减</span>
             </span>
@@ -32,7 +37,7 @@
               <span class="mini-tag">特价</span>
             </span>
             <span class="activity-content">【立减19.5元】欢乐小食餐</span>
-          </div>
+          </div>-->
         </div>
       </section>
       <div class="split"></div>
@@ -40,33 +45,12 @@
       <section class="section">
         <h3 class="section-title">商家实景</h3>
         <div class="pic-wrapper">
-          <ul class="pic-list">
-            <li class="pic-item">
-              <img
-                width="120"
-                height="90"
-                src="https://fuss10.elemecdn.com/f/7f/d1422ec824a0a9d1fb879c57ab533jpeg.jpeg"
-              />
-            </li>
-            <li class="pic-item">
-              <img
-                width="120"
-                height="90"
-                src="https://fuss10.elemecdn.com/f/7f/d1422ec824a0a9d1fb879c57ab533jpeg.jpeg"
-              />
-            </li>
-            <li class="pic-item">
-              <img
-                width="120"
-                height="90"
-                src="https://fuss10.elemecdn.com/f/7f/d1422ec824a0a9d1fb879c57ab533jpeg.jpeg"
-              />
-            </li>
-            <li class="pic-item">
-              <img
-                width="120"
-                height="90"
-                src="https://fuss10.elemecdn.com/f/7f/d1422ec824a0a9d1fb879c57ab533jpeg.jpeg"
+          <ul class="pic-list" ref="pics">
+            <li class="pic-item" v-for="(pic,index) in info.pics" :key="index">
+              <img 
+              width="120" 
+              height="90" 
+              :src="pic" 
               />
             </li>
           </ul>
@@ -79,19 +63,19 @@
         <ul class="detail">
           <li>
             <span class="bold">品类</span>
-            <span>包子粥店, 简餐</span>
+            <span>{{info.category}}</span>
           </li>
           <li>
             <span class="bold">商家电话</span>
-            <span>18501081111</span>
+            <span>{{info.phone}}</span>
           </li>
           <li>
             <span class="bold">地址</span>
-            <span>北京市昌平区回龙观44号</span>
+            <span>{{info.address}}</span>
           </li>
           <li>
             <span class="bold">营业时间</span>
-            <span>09:35-21:00</span>
+            <span>{{info.workTime}}</span>
           </li>
         </ul>
       </section>
@@ -100,7 +84,55 @@
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+import Bscroll from "better-scroll";
+export default {
+  data() {
+    return {
+      classArr: ["activity-green", "activity-red", "activity-origin"]
+    };
+  },
+  computed: {
+    ...mapState({
+      info: state => state.shop.info
+    })
+  },
+  mounted() {
+    // 如果info中有内容了，就初始化滚动
+    if (this.info.name) {
+      this._initScroll();
+    }
+    // this._initScroll();
+  },
+  watch: {
+    // 当前页面刷新，初始显示没有数据，后面才有数据
+    info() {
+      this.$nextTick(() => {
+        this._initScroll();
+      });
+      //  this._initScroll();
+    }
+  },
+  methods: {
+    _initScroll() {
+      // 整体垂直滑动
+      new Bscroll(".shop-info");
+
+      // 水平滑动
+      // 水平滑动，使ul随li的增多而撑开，并不是固定的
+      const ul = this.$refs.pics
+      const liwidth = 120
+      const space = 6
+      const licount= this.info.pics.length
+      const width = (liwidth+space) * licount - space
+      ul.style.width=width + 'px'
+      new Bscroll(".pic-wrapper",{
+        click:true,
+        scrollX:true
+      });
+    }
+  }
+};
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
 @import '../../../common/stylus/mixins.styl'
